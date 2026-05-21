@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI智能宠物喂养器 - 科学喂食，AI看护，互动解闷，让爱宠享受科技带来的温暖呵护">
+    <title>AI智能宠物喂养器 - 华创物语科技</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF9F43;
+            --primary-light: #FFB347;
+            --primary-dark: #E88A2A;
+            --secondary: #5DB075;
+            --accent: #FF6B6B;
+            --warm-bg: #FFFBF5;
+            --warm-bg2: #FFF5E6;
+            --text-dark: #2D2A26;
+            --text-light: #6B6560;
+            --text-muted: #9C9690;
+            --white: #FFFFFF;
+            --card-shadow: 0 4px 20px rgba(255, 159, 67, 0.08);
+            --card-shadow-hover: 0 12px 40px rgba(255, 159, 67, 0.15);
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: "Noto Sans SC", "ZCOOL KuaiLe", -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 400;
+            background-color: var(--warm-bg);
+            color: var(--text-dark);
+            line-height: 1.9;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .blob {
+            position: fixed; border-radius: 50%; filter: blur(80px);
+            opacity: 0.35; z-index: -1; pointer-events: none;
+        }
+        .blob-1 { width: 700px; height: 700px; background: radial-gradient(circle, #FFD4A8 0%, transparent 70%); top: -250px; right: -150px; }
+        .blob-2 { width: 600px; height: 600px; background: radial-gradient(circle, #FFE4C4 0%, transparent 70%); bottom: 10%; left: -200px; }
+        .blob-3 { width: 500px; height: 500px; background: radial-gradient(circle, #E8F5E0 0%, transparent 70%); bottom: -100px; right: 10%; }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(255, 251, 245, 0.88);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 0 60px; height: 72px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; border-bottom: 1px solid rgba(255, 159, 67, 0.08);
+        }
+        nav .container { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo img { height: 42px; width: 42px; object-fit: contain; }
+        .logo-text { font-size: 1.15rem; font-weight: 500; color: var(--primary-dark); letter-spacing: 0.02em; }
+
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-light);
+            font-size: 0.92rem; font-weight: 400; transition: var(--transition);
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ""; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--primary);
+            border-radius: 2px; transition: var(--transition);
+        }
+        .nav-links a:hover { color: var(--primary-dark); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--primary); color: white !important;
+            padding: 10px 24px; border-radius: 50px;
+            font-weight: 500; font-size: 0.88rem;
+            box-shadow: 0 4px 16px rgba(255, 159, 67, 0.3); transition: var(--transition);
+        }
+        .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 159, 67, 0.4); }
+        .nav-cta::after { display: none !important; }
+
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding: 72px 0 0; position: relative; overflow: hidden;
+        }
+        .hero .container { display: flex; align-items: center; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .hero::before {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 30% 50%, #FFF8F0 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, #FFF0E0 0%, transparent 40%);
+            z-index: 0;
+        }
+        .hero-content { flex: 1; max-width: 600px; z-index: 2; padding: 60px 60px 60px 0; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255, 159, 67, 0.1);
+            border: 1px solid rgba(255, 159, 67, 0.2);
+            padding: 8px 16px; border-radius: 50px;
+            font-size: 0.85rem; color: var(--primary-dark); font-weight: 400;
+            margin-bottom: 28px;
+        }
+        .hero-content h1 {
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: clamp(2.4rem, 4vw, 3.8rem);
+            line-height: 1.2; margin-bottom: 24px;
+            color: var(--text-dark); letter-spacing: 0.01em;
+            font-weight: 400;
+        }
+        .hero-content h1 .highlight {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-content .subtitle {
+            font-size: 1.15rem; color: var(--text-light);
+            margin-bottom: 40px; line-height: 2;
+            font-weight: 300;
+        }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white; padding: 16px 36px; border-radius: 60px;
+            text-decoration: none; font-weight: 500; font-size: 0.95rem;
+            box-shadow: 0 8px 30px rgba(255, 159, 67, 0.35); transition: var(--transition);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255, 159, 67, 0.45); }
+        .btn-secondary {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--white); color: var(--text-dark);
+            padding: 16px 36px; border-radius: 60px;
+            text-decoration: none; font-weight: 500; font-size: 0.95rem;
+            border: 1px solid rgba(0,0,0,0.08); transition: var(--transition);
+        }
+        .btn-secondary:hover { border-color: var(--primary-light); color: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .hero-visual { flex: 1.2; position: relative; z-index: 2; display: flex; justify-content: center; align-items: center; padding: 60px 0; }
+        .hero-video-wrap { position: relative; width: 100%; max-width: 640px; }
+        .hero-video-wrap::before {
+            content: ""; position: absolute; inset: -20px;
+            background: linear-gradient(135deg, rgba(255,159,67,0.1), rgba(255,179,71,0.05));
+            border-radius: 40px; z-index: -1;
+        }
+        .video-card {
+            border-radius: 28px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1); transition: var(--transition);
+            position: relative; cursor: pointer;
+        }
+        .video-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 30px 80px rgba(0,0,0,0.14); }
+        .video-card video { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; }
+        .video-poster { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; border-radius: 28px; }
+        .play-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 72px; height: 72px; background: rgba(255,255,255,0.95);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); transition: all 0.3s ease;
+            z-index: 5;
+        }
+        .play-btn::after {
+            content: "";
+            width: 0; height: 0;
+            border-left: 24px solid var(--primary);
+            border-top: 14px solid transparent;
+            border-bottom: 14px solid transparent;
+            margin-left: 6px;
+        }
+        .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); background: white; }
+        .play-btn.hidden { opacity: 0; pointer-events: none; }
+
+        .pets-badge {
+            position: absolute; bottom: -16px; left: -20px;
+            background: var(--white); padding: 14px 20px;
+            border-radius: 18px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.88rem; font-weight: 400; color: var(--text-dark); z-index: 3;
+        }
+        .pets-badge strong { color: var(--primary-dark); font-weight: 600; }
+
+        .section { padding: 120px 0; }
+        .section .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .section-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em;
+            color: var(--primary); margin-bottom: 16px;
+        }
+        .section-title { margin-bottom: 60px; }
+        .section-title h2 {
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            color: var(--text-dark); letter-spacing: 0.01em;
+            font-weight: 400; margin-bottom: 14px;
+        }
+        .section-title p { font-size: 1.08rem; color: var(--text-light); max-width: 560px; font-weight: 300; }
+        .section-divider {
+            width: 48px; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 3px; margin-top: 20px;
+        }
+
+        #features { background: linear-gradient(180deg, var(--warm-bg) 0%, var(--warm-bg2) 100%); }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+        .feature-card {
+            background: var(--white); padding: 40px 32px; border-radius: 24px;
+            box-shadow: var(--card-shadow); transition: var(--transition);
+            position: relative; overflow: hidden;
+            border: 1px solid rgba(255,159,67,0.06);
+        }
+        .feature-card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            opacity: 0; transition: var(--transition);
+        }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: var(--card-shadow-hover); border-color: rgba(255,159,67,0.12); }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-icon {
+            width: 64px; height: 64px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; margin-bottom: 24px; transition: var(--transition);
+        }
+        .feature-card:hover .feature-icon { transform: scale(1.08) rotate(-3deg); }
+        .icon-orange { background: linear-gradient(135deg, #FFF0E0, #FFE4C4); }
+        .icon-green { background: linear-gradient(135deg, #E8F5E0, #D4EDDA); }
+        .icon-blue { background: linear-gradient(135deg, #E3F0FF, #CCE4FF); }
+        .icon-pink { background: linear-gradient(135deg, #FFE3E3, #FFD4D4); }
+        .feature-card h3 { 
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: 1.4rem; margin-bottom: 10px; color: var(--text-dark); font-weight: 400; 
+        }
+        .feature-card .feature-lead { font-size: 0.92rem; color: var(--primary-dark); font-weight: 500; margin-bottom: 16px; }
+        .feature-card ul { list-style: none; }
+        .feature-card ul li {
+            margin-bottom: 12px; padding-left: 18px; position: relative;
+            font-size: 0.92rem; color: var(--text-light); line-height: 1.7;
+        }
+        .feature-card ul li::before { content: "✦"; position: absolute; left: 0; color: var(--primary-light); font-size: 0.75rem; top: 4px; }
+
+        /* Why Section */
+        #why { background: var(--white); }
+        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .why-card {
+            text-align: center; padding: 48px 32px;
+            border-radius: 24px; background: var(--warm-bg);
+            border: 1px solid rgba(255,159,67,0.06);
+            transition: var(--transition);
+        }
+        .why-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+        .why-icon { font-size: 3rem; margin-bottom: 20px; }
+        .why-card h3 { 
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: 1.3rem; margin-bottom: 12px; color: var(--text-dark); font-weight: 400; 
+        }
+        .why-card p { font-size: 0.95rem; color: var(--text-light); line-height: 1.8; font-weight: 300; }
+
+        /* Testimonials */
+        #reviews { background: linear-gradient(180deg, var(--warm-bg2) 0%, var(--warm-bg) 100%); }
+        .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+        .review-card {
+            background: var(--white); padding: 36px; border-radius: 24px;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(255,159,67,0.06);
+            transition: var(--transition);
+        }
+        .review-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+        .review-stars { color: #FFD700; font-size: 1.1rem; margin-bottom: 16px; }
+        .review-text { font-size: 1rem; color: var(--text-light); line-height: 1.9; margin-bottom: 20px; font-weight: 300; }
+        .review-author { display: flex; align-items: center; gap: 12px; }
+        .review-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-light), var(--primary)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1.1rem; }
+        .review-name { font-weight: 500; color: var(--text-dark); }
+        .review-pet { font-size: 0.82rem; color: var(--text-muted); }
+
+        #specs { background: var(--white); }
+        .specs-container { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: start; }
+        .specs-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .g-item {
+            border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); 
+            transition: var(--transition); cursor: pointer; position: relative;
+        }
+        .g-item:hover { transform: scale(1.03); box-shadow: var(--card-shadow-hover); }
+        .g-item:first-child { grid-column: 1 / -1; }
+        .g-item img { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; }
+        .g-item:first-child img { aspect-ratio: 16/7; }
+        .g-item .play-btn { width: 56px; height: 56px; }
+        .g-item .play-btn::after { border-left: 18px solid var(--primary); border-top: 10px solid transparent; border-bottom: 10px solid transparent; margin-left: 4px; }
+        .g-item video { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; }
+        .specs-info h3 { 
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: 1.8rem; color: var(--text-dark); margin-bottom: 16px; letter-spacing: 0.01em; font-weight: 400; 
+        }
+        .specs-info > p { color: var(--text-light); margin-bottom: 32px; font-size: 1rem; font-weight: 300; line-height: 1.9; }
+        .specs-table { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 32px; }
+        .spec-item {
+            padding: 18px 22px; background: var(--warm-bg); border-radius: 14px;
+            border: 1px solid rgba(255,159,67,0.08); transition: var(--transition);
+        }
+        .spec-item:hover { border-color: rgba(255,159,67,0.2); transform: translateY(-2px); }
+        .spec-item .spec-label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+        .spec-item .spec-value { font-weight: 500; color: var(--text-dark); font-size: 0.98rem; }
+        .color-swatches { display: flex; gap: 12px; align-items: center; margin-top: 24px; }
+        .color-swatch { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 2px 8px rgba(0,0,0,0.12); transition: var(--transition); }
+        .color-swatch:hover { transform: scale(1.15); }
+        .swatch-pink { background: #F4C2C2; }
+        .swatch-gray { background: #C9C0BB; }
+        .swatch-beige { background: #E8D9C5; }
+        .swatch-white { background: #FAFAFA; border-color: #eee; }
+        .color-label { font-size: 0.88rem; color: var(--text-muted); margin-left: 6px; font-weight: 300; }
+
+        #about { background: linear-gradient(180deg, var(--warm-bg2) 0%, var(--warm-bg) 100%); }
+        .about-card {
+            background: var(--white); border-radius: 32px; padding: 72px;
+            max-width: 1000px; margin: 0 auto; text-align: center;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(255,159,67,0.06);
+        }
+        .about-card p { font-size: 1.12rem; color: var(--text-light); line-height: 2; max-width: 720px; margin: 0 auto; font-weight: 300; }
+        .about-stats { display: flex; justify-content: center; gap: 80px; margin-top: 56px; padding-top: 48px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .about-stat strong { 
+            display: block; font-size: 2.4rem; color: var(--primary-dark); font-weight: 600;
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+        }
+        .about-stat span { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+        /* CTA Section */
+        #cta { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 100px 0; }
+        .cta-content { text-align: center; max-width: 700px; margin: 0 auto; }
+        .cta-content h2 {
+            font-family: "ZCOOL KuaiLe", "Noto Sans SC", cursive;
+            font-size: clamp(1.8rem, 3vw, 2.6rem); color: white; margin-bottom: 20px; font-weight: 400;
+        }
+        .cta-content p { font-size: 1.1rem; color: rgba(255,255,255,0.85); margin-bottom: 36px; font-weight: 300; }
+        .cta-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: white; color: var(--primary-dark);
+            padding: 18px 48px; border-radius: 60px;
+            text-decoration: none; font-weight: 600; font-size: 1rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15); transition: var(--transition);
+        }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+
+        footer { background: var(--text-dark); color: var(--white); padding: 80px 0 50px; }
+        footer .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px; margin-bottom: 60px; }
+        .footer-brand .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .footer-brand .footer-logo img { height: 38px; }
+        .footer-brand .footer-logo span { font-weight: 500; font-size: 1.1rem; color: var(--primary-light); }
+        .footer-brand p { font-size: 0.92rem; opacity: 0.55; line-height: 1.9; max-width: 320px; font-weight: 300; }
+        .footer-col h4 { font-size: 0.88rem; font-weight: 500; opacity: 0.5; margin-bottom: 20px; }
+        .footer-col a, .footer-col p { display: block; font-size: 0.92rem; color: var(--white); opacity: 0.65; text-decoration: none; margin-bottom: 12px; transition: var(--transition); font-weight: 300; }
+        .footer-col a:hover { opacity: 1; color: var(--primary-light); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; opacity: 0.4; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 1200px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1024px) {
+            .hero .container { flex-direction: column; padding-top: 100px; }
+            .hero-content { max-width: 100%; padding-right: 0; text-align: center; }
+            .hero-actions { justify-content: center; }
+            .hero-visual { margin-top: 40px; width: 100%; max-width: 600px; }
+            .specs-container { grid-template-columns: 1fr; gap: 40px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            nav { padding: 0 24px; }
+            .nav-links { gap: 20px; }
+            .nav-links li:not(:last-child) { display: none; }
+            .section { padding: 80px 0; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+            .about-stats { gap: 30px; flex-wrap: wrap; }
+            .about-card { padding: 40px 24px; }
+            .features-grid, .why-grid, .reviews-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 2rem; }
+            .specs-table { grid-template-columns: 1fr; }
+            .hero-actions { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">
+                <img src="resources/logo_wybc.png" alt="华创物语">
+                <span class="logo-text">华创物语</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">产品特性</a></li>
+                <li><a href="#why">为什么选择</a></li>
+                <li><a href="#specs">规格参数</a></li>
+                <li><a href="#reviews">用户评价</a></li>
+                <li><a href="#contact" class="nav-cta">立即咨询</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge"><span>🐾</span> 专为爱宠设计的智能喂养方案</div>
+                <h1>让爱不再缺席<br><span class="highlight">AI智能宠物喂养器</span></h1>
+                <p class="subtitle">准·净·省·看得见，护得好，不孤单。<br>给毛孩子一个温馨智能的家。</p>
+                <div class="hero-actions">
+                    <a href="#features" class="btn-primary">探索产品 🐾</a>
+                    <a href="#specs" class="btn-secondary">查看详情 →</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-video-wrap">
+                    <div class="video-card" id="heroVideoCard" onclick="playHeroVideo()">
+                        <img src="resources/ChatGPT-dogcat.png" alt="AI智能宠物喂养器" class="video-poster" id="heroPoster">
+                        <div class="play-btn" id="heroPlayBtn"></div>
+                        <video id="heroVideo" style="display:none;" preload="none">
+                            <source src="resources/wybc2v0-dogcat_wechat.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="pets-badge">
+                        <span>🐶🐱</span>
+                        <span>已守护 <strong>10,000+</strong> 毛孩子</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="container">
+            <div class="section-tag">✨ 产品特性</div>
+            <div class="section-title">
+                <h2>四大核心能力，全方位守护</h2>
+                <p>从科学喂养到情感陪伴，用科技读懂毛孩子的需求</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon icon-orange">🥣</div>
+                    <h3>科学喂食</h3>
+                    <p class="feature-lead">准！净！省！</p>
+                    <ul>
+                        <li>定时定量 + 远程/现场双模式，不担心毛孩子饿肚子</li>
+                        <li>独特称重设计 + 防卡粮结构，精准控量，省心省事</li>
+                        <li>全方位清洁 + 防潮防尘，每一口都干净</li>
+                        <li>食物余量实时监测，低于阈值自动提醒</li>
+                    </ul>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon icon-green">👁️</div>
+                    <h3>AI 智能看护</h3>
+                    <p class="feature-lead">看得见！护得好！</p>
+                    <ul>
+                        <li>AI 指定宠物追踪 + 手动控屏，出差也能实时看它蹦跶</li>
+                        <li>AI 行为录像/拍照 + 状态分析，深度了解毛孩子日常</li>
+                        <li>危险行为告警 + 全彩/红外双模夜视，安全感十足</li>
+                        <li>本地+云端双存储，隐私保护，在家开启也放心</li>
+                    </ul>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon icon-blue">🕹️</div>
+                    <h3>互动解闷</h3>
+                    <p class="feature-lead">不孤单！超有趣！</p>
+                    <ul>
+                        <li>实时语音双向对话，随时呼唤爱宠</li>
+                        <li>手动/自动激光逗玩，上班时毛孩子也有得玩</li>
+                        <li>语音召唤喂食，像在身边一样陪伴</li>
+                    </ul>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon icon-pink">💬</div>
+                    <h3>贴心服务</h3>
+                    <p class="feature-lead">有帮手！不踩坑！</p>
+                    <ul>
+                        <li>养宠交流社区 + 专业兽医在线解答</li>
+                        <li>详细图文教程 + 视频指南，从安装到使用全程指引</li>
+                        <li>挑食、异常行为等个性化问题专业解答</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="why" class="section">
+        <div class="container">
+            <div class="section-tag">💡 为什么选择</div>
+            <div class="section-title">
+                <h2>更懂宠物，更懂主人</h2>
+                <p>每一个细节都为爱宠精心设计</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="why-grid">
+                <div class="why-card reveal">
+                    <div class="why-icon">🏠</div>
+                    <h3>家的感觉</h3>
+                    <p>模拟家庭环境设计，让宠物独自在家也能感受到主人的陪伴与温暖</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">🧠</div>
+                    <h3>AI 更聪明</h3>
+                    <p>智能识别宠物种类和体重，自动调整喂食方案，科学养宠更健康</p>
+                </div>
+                <div class="why-card reveal">
+                    <div class="why-icon">🔒</div>
+                    <h3>安全放心</h3>
+                    <p>食品级材质 + 防水防尘设计 + 双重存储，隐私安全有保障</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="section">
+        <div class="container">
+            <div class="section-tag">📐 规格参数</div>
+            <div class="section-title">
+                <h2>强劲核心，丝滑体验</h2>
+                <p>每一个细节，都为更好的养宠生活设计</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="specs-container">
+                <div class="specs-gallery">
+                    <div class="g-item" onclick="playSpecVideo(this)">
+                        <img src="resources/ChatGPT-dogcat.png" alt="产品演示">
+                        <div class="play-btn"></div>
+                        <video style="display:none;" preload="none">
+                            <source src="resources/wybc2v0-1080_wechat.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="g-item">
+                        <img src="resources/wybc-jm4.png" alt="产品细节">
+                    </div>
+                    <div class="g-item">
+                        <img src="resources/wybc-dog.png" alt="宠物使用场景">
+                    </div>
+                </div>
+                <div class="specs-info">
+                    <h3>高性能配置</h3>
+                    <p>搭载 AI+WiFi 双芯片，实时操作、高清直播、视频回放全程流畅。3kg 大容量储粮仓，长期出差也能安心托管。</p>
+                    <div class="specs-table">
+                        <div class="spec-item"><span class="spec-label">尺寸</span><span class="spec-value">300 × 250 × 500 mm</span></div>
+                        <div class="spec-item"><span class="spec-label">重量</span><span class="spec-value">3 kg</span></div>
+                        <div class="spec-item"><span class="spec-label">材质</span><span class="spec-value">食品级安全材料</span></div>
+                        <div class="spec-item"><span class="spec-label">电源</span><span class="spec-value">DC 12V - 1.5A</span></div>
+                        <div class="spec-item"><span class="spec-label">电池</span><span class="spec-value">5000mAh 锂电池（备选）</span></div>
+                        <div class="spec-item"><span class="spec-label">充电</span><span class="spec-value">USB-C 快充</span></div>
+                    </div>
+                    <div class="color-swatches">
+                        <div class="color-swatch swatch-pink" title="粉色"></div>
+                        <div class="color-swatch swatch-gray" title="浅灰"></div>
+                        <div class="color-swatch swatch-beige" title="米色"></div>
+                        <div class="color-swatch swatch-white" title="白色"></div>
+                        <span class="color-label">多款颜色可选，点缀家居</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="section">
+        <div class="container">
+            <div class="section-tag">💬 用户评价</div>
+            <div class="section-title">
+                <h2>听听铲屎官们怎么说</h2>
+                <p>真实反馈，放心选择</p>
+                <div class="section-divider"></div>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card reveal">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"出差再也不担心了！可以实时看到猫咪吃饭的样子，还能跟它说话，感觉就在身边一样。"</p>
+                    <div class="review-author">
+                        <div class="review-avatar">林</div>
+                        <div><div class="review-name">林小姐</div><div class="review-pet">🐱 布偶猫「豆豆」</div></div>
+                    </div>
+                </div>
+                <div class="review-card reveal">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"定时定量太省心了！以前狗狗总是暴饮暴食，现在健康多了，而且重量感应很准确。"</p>
+                    <div class="review-author">
+                        <div class="review-avatar">张</div>
+                        <div><div class="review-name">张先生</div><div class="review-pet">🐶 金毛「旺财」</div></div>
+                    </div>
+                </div>
+                <div class="review-card reveal">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">"画质超清晰！晚上也能看得很清楚，激光逗宠功能我家猫超喜欢，终于不无聊了~"</p>
+                    <div class="review-author">
+                        <div class="review-avatar">王</div>
+                        <div><div class="review-name">王太太</div><div class="review-pet">🐱 英短「团子」</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-tag">🏢 关于我们</div>
+            <div class="section-title">
+                <h2>用科技连接宠物与主人</h2>
+                <div class="section-divider"></div>
+            </div>
+            <div class="about-card reveal">
+                <p>华创物语科技是一家专注于智能宠物产品研发的创新型公司。我们坚持以用户体验为核心，将AI技术融入养宠场景，致力于为每一位爱宠主人提供更便捷、更温暖的养宠解决方案。</p>
+                <div class="about-stats">
+                    <div class="about-stat"><strong>10,000+</strong><span>服务家庭</span></div>
+                    <div class="about-stat"><strong>99.2%</strong><span>用户满意度</span></div>
+                    <div class="about-stat"><strong>24h</strong><span>在线客服</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to give your pet the best care?</h2>
+                <p>联系我们，了解更多产品详情，早日让毛孩子享受智能生活</p>
+                <a href="#contact" class="cta-btn">立即咨询 🐾</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="resources/logo_wybc.png" alt="华创物语">
+                        <span>华创物语科技</span>
+                    </div>
+                    <p>致力于用科技连接宠物与主人，打造更智能、更温馨的养宠生活方式。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>快速链接</h4>
+                    <a href="#features">产品特性</a>
+                    <a href="#why">为什么选择</a>
+                    <a href="#specs">规格参数</a>
+                    <a href="#reviews">用户评价</a>
+                </div>
+                <div class="footer-col">
+                    <h4>联系我们</h4>
+                    <p>📍 惠州市惠城区桥东街道赛格广场1602</p>
+                    <p>📞 400-888-9999</p>
+                    <p>✉️ adaluo2510@outlook.com</p>
+                    <p>🌐 <a href="http://www.hcwykj.com">www.hcwykj.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2024 华创物语科技有限公司. All rights reserved.</span>
+                <span>让爱不再缺席 🐾</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function playHeroVideo() {
+            var poster = document.getElementById('heroPoster');
+            var playBtn = document.getElementById('heroPlayBtn');
+            var video = document.getElementById('heroVideo');
+            poster.style.display = 'none';
+            playBtn.classList.add('hidden');
+            video.style.display = 'block';
+            video.play();
+        }
+
+        function playSpecVideo(el) {
+            var playBtn = el.querySelector('.play-btn');
+            var img = el.querySelector('img');
+            var video = el.querySelector('video');
+            img.style.display = 'none';
+            playBtn.classList.add('hidden');
+            video.style.display = 'block';
+            video.play();
+        }
+
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add("visible"), i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+
+        document.querySelectorAll("a[href^=\"#\"]").forEach(a => {
+            a.addEventListener("click", e => {
+                e.preventDefault();
+                const t = document.querySelector(a.getAttribute("href"));
+                if (t) t.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+        });
+    </script>
+</body>
+</html>

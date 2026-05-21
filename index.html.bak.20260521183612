@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI智能宠物喂养器 - 科学喂食，AI看护，互动解闷，让爱宠享受科技带来的温暖呵护">
+    <title>AI智能宠物喂养器 - 华创物语科技</title>
+    <style>
+        :root {
+            --primary: #FFB347;
+            --secondary: #4A90E2;
+            --accent: #FF6B6B;
+            --warm-bg: #FFF9F1;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #FFFFFF;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background-color: var(--warm-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo span {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: linear-gradient(135deg, #FFF9F1 0%, #FFE8CC 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            max-width: 500px;
+        }
+
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transform: rotate(-2deg);
+            transition: var(--transition);
+        }
+
+        .video-container:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Features Section */
+        .section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title .divider {
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-card img {
+            width: 50px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .feature-card ul {
+            list-style: none;
+        }
+
+        .feature-card ul li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .feature-card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Hardware & Specs */
+        .hardware-specs {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+        }
+
+        .hardware-info {
+            width: 100%;
+            text-align: center;
+        }
+
+        .hardware-info h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .hardware-info p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+        }
+
+        .specs-table {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .spec-item {
+            padding: 15px;
+            background: var(--warm-bg);
+            border-radius: 12px;
+        }
+
+        .spec-item span:first-child {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* 瀑布流布局 - 解决不同尺寸图片排版问题 */
+        .media-masonry {
+            column-count: 2;
+            column-gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .media-masonry-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background-color: var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        .media-masonry-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .media-masonry-item img, .media-masonry-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .spec-item span:last-child {
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        /* About & Contact */
+        .footer-content {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 80px 10% 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-about h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .footer-links h3, .footer-contact h3 {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .footer-contact p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav { padding: 15px 20px; }
+            .hero { flex-direction: column; text-align: center; padding-top: 100px; height: auto; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-visual { margin-top: 50px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+            .hardware-specs { flex-direction: column; padding: 30px 20px; }
+            .specs-table { grid-template-columns: repeat(2, 1fr); }
+            .media-masonry { column-count: 1; column-gap: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .specs-table { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <img src="resources/logo_wybc.png" alt="Logo">
+            <span>华创物语</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#features">产品特性</a></li>
+            <li><a href="#specs">产品规格</a></li>
+            <li><a href="#about">关于我们</a></li>
+            <li><a href="#contact">联系我们</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>让爱不再缺席<br><span>AI智能宠物喂养器</span></h1>
+            <p>准！净！省！看得见，护得好，不孤单。给毛孩子一个温馨智能的家。</p>
+            <div class="cta">
+                <a href="#features" style="display: inline-block; background: var(--primary); color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 10px 20px rgba(255,179,71,0.3);">立即探索</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="video-container">
+                <video autoplay loop muted playsinline poster="resources/ChatGPT-dogcat.png">
+                    <source src="resources/wybc2v0-dogcat.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <div class="section-title">
+            <h2>🫰 产品特性</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="features-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card">
+                <div style="font-size: 40px; margin-bottom: 15px;">🥣</div>
+                <h3>科学喂食</h3>
+                <p><strong>准！净！省！</strong></p>
+                <ul>
+                    <li>定时定量 + 远程/现场双喂食，不担心毛孩子饿肚子</li>
+                    <li>独特称重设计 + 防卡粮，精准控量，省心又省事</li>
+                    <li>全方位清洁 + 防潮防尘，毛孩子吃的每一口都干净</li>
+                    <li>食物量少告警，粮快没了自动提醒，避免断粮尴尬</li>
+                </ul>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card">
+                <div style="font-size: 40px; margin-bottom: 15px;">👁️</div>
+                <h3>AI 智能看护</h3>
+                <p><strong>看得见！护得好！</strong></p>
+                <ul>
+                    <li>AI 指定宠物追踪 + 手动控屏追踪，出差也能实时看它蹦跶</li>
+                    <li>AI 行为录像/拍照 + 状态分析 + 生活轨迹，懂毛孩子日常</li>
+                    <li>危险行为告警 + 全彩/红外录像 + 实时直播，安全感拉满</li>
+                    <li>全方位隐私保护，在家开启也放心，用着无顾虑</li>
+                </ul>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card">
+                <div style="font-size: 40px; margin-bottom: 15px;">🕹️</div>
+                <h3>互动解闷</h3>
+                <p><strong>不孤单！超有趣！</strong></p>
+                <ul>
+                    <li>实时语音对话 + 语音召唤喂食，像在身边陪它</li>
+                    <li>手动/自动激光逗玩，上班时毛孩子也有得玩，不拆家、不无聊</li>
+                    <li>即使不在家，也能陪伴左右，互动感拉满</li>
+                </ul>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="feature-card">
+                <div style="font-size: 40px; margin-bottom: 15px;">👤</div>
+                <h3>贴心服务</h3>
+                <p><strong>有帮手！不踩坑！</strong></p>
+                <ul>
+                    <li>养宠交流分享 + 专家医生解答，专业解答科学养宠</li>
+                    <li>详细指南 + 专业客服，从安装到使用都有详细指南</li>
+                    <li>挑食、异常行为等问题专业解答，养宠更省心</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="specs" class="section" style="background: #FFF;">
+        <div class="section-title">
+            <h2>🔬 核心硬件 & 规格</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="hardware-specs">
+            <div class="hardware-info">
+                <h3>强劲核心，丝滑体验</h3>
+                <p style="margin: 20px 0; color: var(--text-light);">
+                    搭载高性能 AI+WiFi 芯片，实时操作、直播、回放都流畅。
+                    3kg 大容量储粮仓，解决长期出差补粮痛点。
+                </p>
+                <div class="media-masonry">
+                    <div class="media-masonry-item">
+                        <img src="resources/wybc-jm4.png" alt="产品展示图1">
+                    </div>
+                    <div class="media-masonry-item">
+                        <img src="resources/wybc-jjm2.png" alt="产品展示图2">
+                    </div>
+                    <div class="media-masonry-item">
+                        <video autoplay loop muted playsinline>
+                            <source src="resources/wybc2v0-1080.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-masonry-item">
+                        <img src="resources/wybc-dog.png" alt="产品展示图3">
+                    </div>
+                </div>
+                <div class="colors-row" style="justify-content: center; margin-bottom: 20px;">
+                    <div class="color-dot pink" title="粉色"></div>
+                    <div class="color-dot gray" title="浅灰"></div>
+                    <div class="color-dot beige" title="米色"></div>
+                    <div class="color-dot white" title="白色"></div>
+                </div>
+                <p style="text-align: center; font-size: 0.8rem; margin-top: 10px; color: var(--text-light);">多款颜色可选，点缀家居</p>
+            </div>
+            <div class="specs-table">
+                <div class="spec-item"><span>尺寸</span><span>300 × 250 × 500 mm</span></div>
+                <div class="spec-item"><span>重量</span><span>3kg</span></div>
+                <div class="spec-item"><span>材质</span><span>食品级材料</span></div>
+                <div class="spec-item"><span>电源</span><span>DC12V-1.5A</span></div>
+                <div class="spec-item"><span>电池</span><span>5000mAh 锂电池（备选）</span></div>
+                <div class="spec-item"><span>充电</span><span>USB-C 快充</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="section-title">
+            <h2>👥 关于我们</h2>
+            <div class="divider"></div>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto; text-align: center; line-height: 2;">
+            <p>我们是一家专注于创新科技产品的公司，致力于为用户提供高品质、高性能的智能设备。自成立以来，我们始终坚持以用户体验为核心，不断推出引领行业的创新产品。</p>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer-content">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <h3>华创物语科技</h3>
+                <p style="font-size: 0.9rem; opacity: 0.7; line-height: 1.8;">
+                    致力于用科技连接宠物与主人，打造更智能、更温馨的养宠生活方式。
+                </p>
+            </div>
+            <div class="footer-links">
+                <h3>快速链接</h3>
+                <p><a href="#features" style="color: white; text-decoration: none; opacity: 0.7; font-size: 0.9rem;">产品特性</a></p>
+                <p><a href="#specs" style="color: white; text-decoration: none; opacity: 0.7; font-size: 0.9rem;">产品规格</a></p>
+                <p><a href="#about" style="color: white; text-decoration: none; opacity: 0.7; font-size: 0.9rem;">关于我们</a></p>
+            </div>
+            <div class="footer-contact">
+                <h3>联系我们</h3>
+                <p>📍 地址: 惠州市惠城区桥东街道赛格广场1602</p>
+                <p>📞 电话: 400-888-9999</p>
+                <p>✉️ 邮箱: adaluo2510@outlook.com</p>
+                <p>🌐 网站: <a href="http://www.hcwykj.com" style="color: var(--primary); text-decoration: none;">www.hcwykj.com</a></p>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2024 华创物语科技有限公司. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
